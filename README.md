@@ -1,3 +1,5 @@
+ViT - Vision Transformer
+------------------------
 <p align="center">
   <img src="./asset/gif/ViT_model.gif" alt="ViT_Model">
 </p>
