@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="./asset/gif/vit_model.gif" alt="ViT_Model">
+  <img src="./asset/gif/ViT_model.gif" alt="ViT_Model">
 </p>
 
 <p align="center">Source:
