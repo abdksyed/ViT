@@ -63,7 +63,7 @@ Here the result is shown for only patch, we perform this operation for every pat
 * The *hidden_state* is passed through 3 separate Linear layers, which converts the *hidden_state* to ***key***, ***value*** and ***query***. 
 * All the three are split by *config['num_head']* for Multi-Head Attention.
 * The ***key*** and ***query*** are multiplies(*matmul*), to get the attention scores. These attention scores can be thought as the weights/attention/focus of each patch/embedding with all the other patches in the image.
-* The attention scores are passed through the *softmax* layer to get the probability distribution, It has been empirically found out that, it's better to divide by $\sqrt{d}$ to the attention scores before sending to softmax, since huge values in softmax get separated even more.
+* The attention scores are passed through the *softmax* layer to get the probability distribution, It has been empirically found out that, it's better to divide by <img src="https://render.githubusercontent.com/render/math?math=\sqrt{d}"> to the attention scores before sending to softmax, since huge values in softmax get separated even more.
 * If any attention dropout is given, it is applied, and than the ***values*** embedding is multiplied(matmul) with attention scores, this can be thought of as weighted average of the value embeddings based on the attention/focus of each patch with all other patches.
 * Finally the multi-ahead attention based heads are combined, and a projection layer (Linear) is applied.
 
