@@ -1,4 +1,4 @@
-![ViT_Model](./asset/gif/ViT_model.gif)
+<p align="center">![ViT_Model](./asset/gif/ViT_model.gif)</p>
 
 <p align="center">Credits: [Google AI Blog](https://ai.googleblog.com/2020/12/transformers-for-image-recognition-at.html)</p>
 
@@ -31,13 +31,13 @@ In brief the self-attention mechanism, is a dynamic way to attend to each part o
 
 ![Attention](./asset/gif/self_attention.gif)
 
-​                                                                   Credits: [Louis Bouchard](https://www.louisbouchard.ai/will-transformers-replace-cnns-for-vision/)
+Credits: [Louis Bouchard](https://www.louisbouchard.ai/will-transformers-replace-cnns-for-vision/)
 
 Each Patch attends to every other patch, and the results are passed though a softmax and multiplied with value embeddings as shown below:
 
-![Attention_vector](./asset/images/self_attention_vector.png)
+<p align="center">![Attention_vector](./asset/images/self_attention_vector.png)</p>
 
-​                                                           Credits: [Towards Data Science](https://towardsdatascience.com/self-attention-in-computer-vision-2782727021f6)
+Credits: [Towards Data Science](https://towardsdatascience.com/self-attention-in-computer-vision-2782727021f6)
 
 Here the result is shown for only patch, we perform this operation for every patch in *query*(blue) and get 3x3 output.
 
@@ -53,7 +53,7 @@ Here the result is shown for only patch, we perform this operation for every pat
 
 ![Multi_Head_Attention](./asset/images/multi_head.png)
 
-​                                                      Credits: [Hedu - Math of Intelligence](https://www.youtube.com/watch?v=mMa2PmYJlCo)
+Credits: [Hedu - Math of Intelligence](https://www.youtube.com/watch?v=mMa2PmYJlCo)
 
 The Multi-Head Attention, can be though as Channels in Convolutions, here each attention head is responsible for filtering out pixels which are related to each other, in the example showed above, the first head focus on the person, where as the second head is focusing on the clouds in the background and similarly the third head is focus on the small mountains in the bottom.
 
