@@ -1,14 +1,20 @@
-<p align="center">![ViT_Model](./asset/gif/ViT_model.gif)</p>
+<p align="center">
+  <img src="./asset/gif/vit_model.gif" alt="ViT_Model">
+</p>
 
-<p align="center">Credits: [Google AI Blog](https://ai.googleblog.com/2020/12/transformers-for-image-recognition-at.html)</p>
+<p align="center">Source:
+ <a href="https://ai.googleblog.com/2020/12/transformers-for-image-recognition-at.html" target="_blank">Google AI Blog</a>
+</p>
 
 ### EMBEDDINGS:
 
 This class as name implies, is used to convert the image from to embeddings, which are 1D vectors, used in transformers. 
 
-![Embeddings](./asset/images/embeddings.png)
+<p align="center">
+  <img src="./asset/images/embeddings.png" alt="Embeddings">
+</p>
 
-The images converted to embeddings are two parts, one which is the *patch_embedding* which is the conversion of the image itself to a vector, and another is *positional_embedding* where a learnable vector of same size as patch_embedding is created and added to patch_embedding.
+The images converted to embeddings are of two parts, one which is the *patch_embedding* which is the conversion of the image itself to a vector, and another is *positional_embedding* where a learnable vector of same size as patch_embedding is created and added to patch_embedding.
 
 * The Image is first used to find the number of patches and size of each patch using the *grid*/*size* parameter from the config.
 * If <u>*hybrid* mode is selected</u> than the Image is sent through the a ResNet model, to convolve the image and get a better represented image with higher channels.
@@ -19,7 +25,9 @@ The images converted to embeddings are two parts, one which is the *patch_embedd
 
 Another perspective on how the embeddings are derived
 
-![Embeddings_flat](./asset/images/embeddings_flat.png)
+<p align="center">
+  <img src="./asset/images/embeddings_flat.png" alt="Embeddings_flat">
+</p>
 
 ### ATTENTION:
 
@@ -29,15 +37,23 @@ This class is the core of transformers, where the image embeddings are the input
 
 In brief the self-attention mechanism, is a dynamic way to attend to each part of the sequence for every position in the sequence. In simple words, a sequence of length E, gives rise to an attention map of ExE, which is formed by forming attention for each position of E with all the other positions including itself, so we get E attention for each position and hence in total ExE map of attentions.
 
-![Attention](./asset/gif/self_attention.gif)
+<p align="center">
+  <img src="./asset/gif/self_attention.gif" alt="Attention">
+</p>
 
-Credits: [Louis Bouchard](https://www.louisbouchard.ai/will-transformers-replace-cnns-for-vision/)
+<p align="center">Source: 
+ <a href="https://www.louisbouchard.ai/will-transformers-replace-cnns-for-vision/" target="_blank">Louis Bouchard</a>
+</p>
 
 Each Patch attends to every other patch, and the results are passed though a softmax and multiplied with value embeddings as shown below:
 
-<p align="center">![Attention_vector](./asset/images/self_attention_vector.png)</p>
+<p align="center">
+  <img src="./asset/images/self_attention_vector.png" alt="Self_Attention_Vector">
+</p>
 
-Credits: [Towards Data Science](https://towardsdatascience.com/self-attention-in-computer-vision-2782727021f6)
+<p align="center">Source: 
+ <a href="https://towardsdatascience.com/self-attention-in-computer-vision-2782727021f6" target="_blank">Towards Data Science</a>
+</p>
 
 Here the result is shown for only patch, we perform this operation for every patch in *query*(blue) and get 3x3 output.
 
@@ -51,9 +67,13 @@ Here the result is shown for only patch, we perform this operation for every pat
 * If any attention dropout is given, it is applied, and than the ***values*** embedding is multiplied(matmul) with attention scores, this can be thought of as weighted average of the value embeddings based on the attention/focus of each patch with all other patches.
 * Finally the multi-ahead attention based heads are combined, and a projection layer (Linear) is applied.
 
-![Multi_Head_Attention](./asset/images/multi_head.png)
+<p align="center">
+  <img src="./asset/images/multi_head.png" alt="Multi_Head_Attention">
+</p>
 
-Credits: [Hedu - Math of Intelligence](https://www.youtube.com/watch?v=mMa2PmYJlCo)
+<p align="center">Source: 
+ <a href="https://www.youtube.com/watch?v=mMa2PmYJlCo" target="_blank">Hedu - Math of Intelligence</a>
+</p>
 
 The Multi-Head Attention, can be though as Channels in Convolutions, here each attention head is responsible for filtering out pixels which are related to each other, in the example showed above, the first head focus on the person, where as the second head is focusing on the clouds in the background and similarly the third head is focus on the small mountains in the bottom.
 
@@ -71,10 +91,8 @@ The weights initialization for the Linear layer is done through Xavier Uniform.
 
 Xavier and Yoshua in their paper titled   [*Understanding the difficulty of training deep feedforward neural networks*](http://proceedings.mlr.press/v9/glorot10a/glorot10a.pdf) showed that initializing the weights from a uniform distribution in [-1,1] range doesn't work that well.
 
-So they came up with an approach where the chose values from a random uniform distribution that's bounded between
-$$
-\pm \frac{\sqrt(6)}{\sqrt{(n_i + n_{i+1})}}
-$$
+So they came up with an approach where the chose values from a random uniform distribution that's bounded between $ \pm \frac{\sqrt(6)}{\sqrt{(n_i + n_{i+1})}} $  
+
 And the bias for the linear layer is initialized using the normal distribution.
 
 ### BLOCK:
