@@ -1,4 +1,4 @@
-![ViT_Model](./asset/gif/vit_model.gif)
+![ViT_Model](./asset/gif/ViT_model.gif)
 
 ​                                                                    Credits: [Google AI Blog](https://ai.googleblog.com/2020/12/transformers-for-image-recognition-at.html)
 
