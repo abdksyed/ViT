@@ -91,7 +91,7 @@ The weights initialization for the Linear layer is done through Xavier Uniform.
 
 Xavier and Yoshua in their paper titled [*Understanding the difficulty of training deep feedforward neural networks*](http://proceedings.mlr.press/v9/glorot10a/glorot10a.pdf) showed that initializing the weights from a uniform distribution in [-1,1] range doesn't work that well.
 
-So they came up with an approach where the chose values from a random uniform distribution that's bounded between $\pm \frac{\sqrt(6)}{\sqrt{(n_i + n_{i+1})}}$  
+So they came up with an approach where the chose values from a random uniform distribution that's bounded between <img src="https://render.githubusercontent.com/render/math?math=\pm \frac{\sqrt(6)}{\sqrt{(n_i + n_{i+1})}}"> 
 
 And the bias for the linear layer is initialized using the normal distribution.
 
