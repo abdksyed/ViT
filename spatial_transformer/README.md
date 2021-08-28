@@ -4,7 +4,7 @@ ViT - Vision Transformer
 Link to [Google Colab](https://colab.research.google.com/drive/1JTbRmbiDaHVhC6rQhjSTAH9T-FZGgCJi?usp=sharing)
 
 <p align="center">
-  <img src="./asset/gif/ViT_model.gif" alt="ViT_Model">
+  <img src="../asset/gif/ViT_model.gif" alt="ViT_Model">
 </p>
 
 <p align="center">Source:
@@ -16,7 +16,7 @@ Link to [Google Colab](https://colab.research.google.com/drive/1JTbRmbiDaHVhC6rQ
 This class as name implies, is used to convert the image from to embeddings, which are 1D vectors, used in transformers. 
 
 <p align="center">
-  <img src="./asset/images/embeddings.png" alt="Embeddings">
+  <img src="../asset/images/embeddings.png" alt="Embeddings">
 </p>
 
 The images converted to embeddings are of two parts, one which is the *patch_embedding* which is the conversion of the image itself to a vector, and another is *positional_embedding* where a learnable vector of same size as patch_embedding is created and added to patch_embedding.
@@ -31,7 +31,7 @@ The images converted to embeddings are of two parts, one which is the *patch_emb
 Another perspective on how the embeddings are derived
 
 <p align="center">
-  <img src="./asset/images/embeddings_flat.png" alt="Embeddings_flat">
+  <img src="../asset/images/embeddings_flat.png" alt="Embeddings_flat">
 </p>
 
 ### ATTENTION:
@@ -43,7 +43,7 @@ This class is the core of transformers, where the image embeddings are the input
 In brief the self-attention mechanism, is a dynamic way to attend to each part of the sequence for every position in the sequence. In simple words, a sequence of length E, gives rise to an attention map of ExE, which is formed by forming attention for each position of E with all the other positions including itself, so we get E attention for each position and hence in total ExE map of attentions.
 
 <p align="center">
-  <img src="./asset/gif/self_attention.gif" alt="Attention">
+  <img src="../asset/gif/self_attention.gif" alt="Attention">
 </p>
 
 <p align="center">Source: 
@@ -53,7 +53,7 @@ In brief the self-attention mechanism, is a dynamic way to attend to each part o
 Each Patch attends to every other patch, and the results are passed though a softmax and multiplied with value embeddings as shown below:
 
 <p align="center">
-  <img src="./asset/images/self_attention_vector.png" alt="Self_Attention_Vector">
+  <img src="../asset/images/self_attention_vector.png" alt="Self_Attention_Vector">
 </p>
 
 <p align="center">Source: 
@@ -73,7 +73,7 @@ Here the result is shown for only patch, we perform this operation for every pat
 * Finally the multi-ahead attention based heads are combined, and a projection layer (Linear) is applied.
 
 <p align="center">
-  <img src="./asset/images/multi_head.png" alt="Multi_Head_Attention">
+  <img src="../asset/images/multi_head.png" alt="Multi_Head_Attention">
 </p>
 
 <p align="center">Source: 
@@ -126,4 +126,4 @@ Finally a Layer Norm is applied to the output of the Encoder, to get the encoded
 
 The input to this ***Encoder*** will be the Image Embeddings converted by adding the positional embedding.
 
-![Encoder](./asset/images/encoder.png)
+![Encoder](../asset/images/encoder.png)
