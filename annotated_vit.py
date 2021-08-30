@@ -68,12 +68,12 @@ x = torch.rand((32, 3, 224, 224))
 # Converitng Image to Patch Embeddings.
 # We create a convolution layer with a kernel size and and stride length equal to patch size.
 # This is equivalent to splitting the image into patches and doing a linear
-# transformation on each patch. \n
+# transformation on each patch.
 # y -> (32, 768, 14, 14)
-# After Flattening & Transpose y -> (32, 196, 768) 
-
 proj = nn.Conv2d(3, 768, 16, 16)
 y = proj(x)
+
+# After Flattening & Transpose y -> (32, 196, 768) 
 y = y.flatten(2).transpose(1, 2)
 
 
@@ -89,13 +89,15 @@ class PatchEmbeddings(nn.Module):
     We implement the same thing through a convolution layer, because it's simpler to implement.
     
     This class implementation is the combined of the above steps.
+
     Arguments:
-        image_size: The size of the image to split into patches.
-        patch_size: The size of the patches to split the image into.
-        num_channels: The number of channels in the image.
-        embed_dim: The dimension of the embeddings.
+        * image_size: The size of the image to split into patches.
+        * patch_size: The size of the patches to split the image into.
+        * num_channels: The number of channels in the image.
+        * embed_dim: The dimension of the embeddings.
+
     Returns:
-        A `PatchEmbeddings` module.
+        * A `PatchEmbeddings` module.
     """
 
     def __init__(self, image_size=224, patch_size=16, num_channels=3, embed_dim=768):
