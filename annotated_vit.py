@@ -70,6 +70,7 @@ Converitng Image to Patch Embeddings.
 We create a convolution layer with a kernel size and and stride length equal to patch size.
 This is equivalent to splitting the image into patches and doing a linear
 transformation on each patch.
+
 y -> (32, 768, 14, 14)
 After Flattening & Transpose y -> (32, 196, 768)
 '''
