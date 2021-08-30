@@ -1,3 +1,5 @@
+ViT - Vision Transformer
+========================
 <p align="center">
   <img src="./asset/gif/ViT_model.gif" alt="ViT_Model">
 </p>
@@ -72,7 +74,7 @@ Here the result is shown for only patch, we perform this operation for every pat
 </p>
 
 <p align="center">Source: 
- <a href="https://www.youtube.com/watch?v=mMa2PmYJlCo" target="_blank">Hedu - Math of Intelligence</a>
+ <a href="https://youtu.be/mMa2PmYJlCo?t=815" target="_blank">Hedu - Math of Intelligence</a>
 </p>
 
 The Multi-Head Attention, can be though as Channels in Convolutions, here each attention head is responsible for filtering out pixels which are related to each other, in the example showed above, the first head focus on the person, where as the second head is focusing on the clouds in the background and similarly the third head is focus on the small mountains in the bottom.
