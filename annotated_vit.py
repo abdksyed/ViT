@@ -69,7 +69,6 @@ x = torch.rand((32, 3, 224, 224))
 # We create a convolution layer with a kernel size and and stride length equal to patch size.
 # This is equivalent to splitting the image into patches and doing a linear
 # transformation on each patch.
-
 # y -> (32, 768, 14, 14)
 # After Flattening & Transpose y -> (32, 196, 768) 
 proj = nn.Conv2d(3, 768, 16, 16)
