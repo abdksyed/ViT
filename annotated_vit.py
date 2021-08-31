@@ -89,21 +89,27 @@ class PatchEmbeddings(nn.Module):
     We implement the same thing through a convolution layer, because it's simpler to implement.
     
     This class implementation is the combined of the above steps.
+    """
 
-    Arguments:
+    def __init__(self, image_size=224, patch_size=16, num_channels=3, embed_dim=768):
+        """
+        Arguments:
+
         * image_size: The size of the image to split into patches.
         * patch_size: The size of the patches to split the image into.
         * num_channels: The number of channels in the image.
         * embed_dim: The dimension of the embeddings.
 
-    Returns:
-        * A `PatchEmbeddings` module.
-    """
+        Returns:
 
-    def __init__(self, image_size=224, patch_size=16, num_channels=3, embed_dim=768):
+        * A `PatchEmbeddings` object.
+        """
         super().__init__()
+
+        # Converting image size, patch to a tuple if needed
         image_size = to_2tuple(image_size)
         patch_size = to_2tuple(patch_size)
+        # Number of Patches in the Image
         num_patches = (image_size[1] // patch_size[1]) * (image_size[0] // patch_size[0])
         self.image_size = image_size
         self.patch_size = patch_size
