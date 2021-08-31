@@ -77,7 +77,7 @@ y = proj(x)
 y = y.flatten(2).transpose(1, 2)
 
 
-class PatchEmbeddings(nn.Module):
+class PatchEmbeddings(Module):
     """
     <a id="PatchEmbeddings">
     ## Get patch embeddings
@@ -131,7 +131,7 @@ class PatchEmbeddings(nn.Module):
         return x
 
 
-class ViTEmbeddings(nn.Module):
+class ViTEmbeddings(Module):
     """
     Construct the CLS token, position and patch embeddings.
     """
@@ -236,7 +236,119 @@ class ViTConfig():
         self.num_channels = num_channels
 
 
+# {'attention_probs_dropout_prob': 0.0,
+# 'hidden_act': 'gelu',
+# 'hidden_dropout_prob': 0.0,
+# 'hidden_size': 768,
+# 'image_size': 224,
+# 'initializer_range': 0.02,
+# 'intermediate_size': 3072,
+# 'layer_norm_eps': 1e-12,
+# 'num_attention_heads': 12,
+# 'num_channels': 3,
+# 'num_hidden_layers': 12,
+# 'patch_size': 16}
+configuration = ViTConfig()
+print(vars(configuration))
 
+# Math for sqrt
+import math
+# The heart of Transformer - Self Attention Mechanism
+class ViTSelfAttention(Module):
+    """
+    The class performs self attention mechanism on the input sequence.
+
+    Self Attention is a technique where we calculate attention weights for all the tokens(patches) in the
+    sequence and treat the attention weights as a mask over the tokens(patches) in the sequence. This allows
+    us to only pay attention to certain tokens(patches).
+    """
+    def __init__(self, config):
+        """
+        Arguments:
+
+        * `config`: A class with configuration for the self attention mechanism.
+        """
+        super().__init__()
+        # If number of attention heads is not a divisor of hidden size embeddings, raise Value Error
+        if config.hidden_size % config.num_attention_heads != 0 and not hasattr(config, "embedding_size"):
+            raise ValueError(
+                f"The hidden size {config.hidden_size,} is not a multiple of the number of attention "
+                f"heads {config.num_attention_heads}."
+            )
+        #
+        self.num_attention_heads = config.num_attention_heads
+        self.attention_head_size = int(config.hidden_size / config.num_attention_heads)
+        self.all_head_size = self.num_attention_heads * self.attention_head_size
+        # Query, Key and Value are generated using the Patch Embedding sent to 3 different Linear Layers.
+        self.query = nn.Linear(config.hidden_size, self.all_head_size)
+        self.key = nn.Linear(config.hidden_size, self.all_head_size)
+        self.value = nn.Linear(config.hidden_size, self.all_head_size)
+        # 
+        self.dropout = nn.Dropout(config.attention_probs_dropout_prob)
+
+    def transpose_for_scores(self, x):
+        """
+        Converting the each of key, query and value to multi-head.
+
+        * `x`: A tensor with shape [batch_size, seq_len, all_head_size]
+        """
+        # (32,768) + (12,64) -> (32,768,12,64)
+        new_x_shape = x.size()[:-1] + (self.num_attention_heads, self.attention_head_size)
+        # (32,768,196) -> (32,768,12,196)
+        x = x.view(*new_x_shape)
+        # (32,768,12,64) -> (32,12,768,196)
+        return x.permute(0, 2, 1, 3)
+
+    def forward(self, hidden_states, head_mask=None, output_attentions=False):
+        """
+        * `hidden_states`: A tensors of shape `[batch_size, seq_len, hidden_size]`.
+        * `head_mask`: A masking tensor of shape `[num_heads, num_hidden_layers]`.
+        * `output_attentions`: Whether to output attentions weights.
+        """
+        # Generating Key, Query and Value using the hidden_states 
+        key_layer = self.transpose_for_scores(self.key(hidden_states))
+        value_layer = self.transpose_for_scores(self.value(hidden_states))
+        query_layer = self.transpose_for_scores(self.query(hidden_states))
+
+        # Take the dot product between "query" and "key" to get the raw attention scores.
+        attention_scores = torch.matmul(query_layer, key_layer.transpose(-1, -2))
+        attention_scores = attention_scores / math.sqrt(self.attention_head_size)
+
+        # Normalize the attention scores to probabilities.
+        attention_probs = nn.Softmax(dim=-1)(attention_scores)
+
+        # This is actually dropping out entire tokens to attend to, which might
+        # seem a bit unusual, but is taken from the original Transformer paper.
+        attention_probs = self.dropout(attention_probs)
+
+        # Mask heads if we want to
+        if head_mask is not None:
+            attention_probs = attention_probs * head_mask
+
+        # Take the weighted sum of the values to attention.
+        context_layer = torch.matmul(attention_probs, value_layer)
+
+        # context_layer = context_layer.permute(0, 2, 1, 3)
+        # new_context_layer_shape = context_layer.size()[:-2] + (self.all_head_size,)
+        # context_layer.view(*new_context_layer_shape) will throw an error
+        # (at least one dimension spans across two contiguous subspaces)
+        # This is where the concept of contiguous comes in. x is contiguous
+        # but y is not because its memory layout is different to that of a
+        # tensor of same shape made from scratch. Note that the word
+        # "contiguous" is a bit misleading because it's not that the
+        # content of the tensor is spread out around disconnected blocks
+        # of memory. Here bytes are still allocated in one block of memory
+        # but the order of the elements is different!
+        # When we call contiguous(), it actually makes a copy of the tensor
+        # such that the order of its elements in memory is the same as if it
+        # had been created from scratch with the same data.
+        context_layer = context_layer.permute(0, 2, 1, 3).contiguous()
+        new_context_layer_shape = context_layer.size()[:-2] + (self.all_head_size,)
+        context_layer = context_layer.view(*new_context_layer_shape)
+
+        outputs = (context_layer, attention_probs) if output_attentions else (context_layer,)
+
+        return outputs
 
 
 
